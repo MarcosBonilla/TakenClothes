@@ -1,0 +1,199 @@
+.drop-ended-container {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  background-image: url('/products/camperas/todas.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.drop-ended-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  z-index: 1;
+}
+
+.drop-ended-content {
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.drop-ended-title {
+  font-size: 3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: white;
+  margin-bottom: 1rem;
+  animation: fadeInDown 0.8s ease;
+}
+
+.drop-ended-subtitle {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #999;
+  margin-bottom: 3rem;
+  animation: fadeInDown 1s ease;
+}
+
+.drop-ended-message {
+  animation: fadeIn 1.5s ease;
+}
+
+.drop-ended-message p {
+  font-size: 1.1rem;
+  color: #ccc;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.drop-ended-form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0 1rem 0;
+}
+
+.drop-ended-input {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1.1rem;
+  background: #fff;
+  color: var(--text-primary);
+  min-width: 320px;
+  max-width: 400px;
+}
+
+.drop-ended-btn {
+  padding: 0.8rem 1.5rem;
+  background-color: var(--text-primary);
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.drop-ended-btn:hover {
+  opacity: 0.85;
+}
+
+.drop-ended-error {
+  padding: 1rem;
+  background-color: #ff5252;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  animation: slideDown 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.drop-ended-success {
+  padding: 1rem;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  animation: slideDown 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.drop-ended-socials {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.drop-ended-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  background: #222;
+  border-radius: 50%;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.drop-ended-social svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
+  transition: fill 0.2s;
+}
+
+.drop-ended-social:hover {
+  background: var(--text-primary);
+}
+
+.drop-ended-social:hover svg {
+  fill: #fff;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .drop-ended-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .drop-ended-title {
+    font-size: 2rem;
+  }
+  .drop-ended-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  .drop-ended-message p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .drop-ended-title {
+    font-size: 1.5rem;
+  }
+}

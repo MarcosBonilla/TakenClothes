@@ -1,0 +1,55 @@
+Checklist para publicar la tienda en producción
+
+1. Frontend
+-----------------
+- Cambiar el Client ID de PayPal al de producción (no usar el de sandbox).
+- Verificar que los endpoints del frontend apunten al backend en producción.
+- Probar el flujo de compra completo con datos reales.
+- Revisar estilos y responsividad en dispositivos móviles y desktop.
+- Eliminar datos de prueba y limpiar mensajes de demo.
+
+2. Backend
+-----------------
+- Configurar el backend en un servidor seguro (VPS, cloud, etc.).
+- Usar HTTPS para todas las comunicaciones (certificado SSL).
+- Cambiar la base de datos a una instancia de producción (no usar SQLite local si hay concurrencia).
+- Proteger los endpoints con validación y sanitización de datos.
+- Configurar variables de entorno para credenciales (no hardcodear tokens ni claves).
+- Probar el registro de pedidos y el panel admin con datos reales.
+- Habilitar logs y monitoreo de errores.
+
+3. Pagos
+-----------------
+- PayPal: Usar el Client ID de producción y verificar que la cuenta PayPal esté correctamente configurada para recibir pagos.
+- MercadoPago: Cuando el cliente tenga la cuenta, agregar las credenciales de producción y probar el flujo.
+
+4. Notificaciones
+-----------------
+- WhatsApp Business: Integrar la API y probar el envío de mensajes automáticos (cuando el cliente tenga acceso).
+- Configurar y aprobar los templates de mensajes en Meta.
+
+5. Seguridad y privacidad
+-----------------
+- Revisar el manejo de datos personales (cumplir con GDPR/Ley de datos local).
+- Configurar backups automáticos de la base de datos.
+- Limitar el acceso al panel admin solo a usuarios autorizados.
+
+6. Dominio y hosting
+-----------------
+- Apuntar el dominio al servidor de producción.
+- Configurar el certificado SSL para HTTPS.
+- Probar la web en el dominio final.
+
+7. Pruebas finales
+-----------------
+- Realizar compras reales de prueba (con bajo importe) y verificar todo el flujo.
+- Revisar que los pedidos lleguen al backend y al panel admin.
+- Verificar que los pagos se acrediten correctamente.
+- Probar las notificaciones automáticas (cuando estén listas).
+
+8. Lanzamiento
+-----------------
+- Avisar al cliente y usuarios que la tienda está activa.
+- Monitorear los primeros pedidos y pagos.
+
+Si necesitas ayuda con algún paso, avísame y te guío en la configuración o pruebas.

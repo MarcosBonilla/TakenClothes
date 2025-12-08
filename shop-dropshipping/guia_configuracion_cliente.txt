@@ -1,0 +1,38 @@
+Guía para configurar pagos y notificaciones en tu tienda online
+
+1. PayPal
+-----------------
+Para aceptar pagos con PayPal:
+- Ingresa a https://developer.paypal.com
+- Ve a "Apps & Credentials" y crea una nueva aplicación.
+- Copia el "Client ID" de la sección "Sandbox" (pruebas) y luego el de "Live" (producción) cuando vayas a vender realmente.
+- Pásame solo el "Client ID" (no el Secret ni tu contraseña).
+
+2. MercadoPago
+-----------------
+Para aceptar pagos con MercadoPago:
+- Ingresa a https://www.mercadopago.com.ar/developers/panel/credentials (o el país donde operes).
+- Crea una aplicación en la sección de desarrolladores.
+- Copia estos datos:
+  - Public Key (para el frontend)
+  - Access Token (para el backend)
+- Pásame ambos datos (no tu usuario ni contraseña).
+
+3. WhatsApp Business (para notificaciones automáticas)
+-----------------
+Para que el sistema envíe mensajes automáticos a tus clientes:
+- Descarga la app WhatsApp Business y configura el número de la empresa.
+- Ingresa a https://business.facebook.com/ y crea una cuenta de empresa (si no tienes).
+- Solicita acceso a la API de WhatsApp Business (puedes hacerlo desde Meta o usando proveedores como Twilio, MessageBird, etc.).
+- Cuando tengas acceso, deberás:
+  - Aprobar el mensaje que se enviará automáticamente (Meta te pedirá que lo escribas y lo apruebes).
+  - Compartirme el "Access Token" o credenciales que te dé el proveedor/API.
+
+Resumen de datos que debes pasarme:
+- PayPal: Client ID
+- MercadoPago: Public Key y Access Token
+- WhatsApp Business: Access Token/API Key (cuando lo tengas)
+
+No compartas nunca tu contraseña ni datos personales, solo las credenciales públicas que se indican arriba.
+
+Si tienes dudas en algún paso, avísame y te ayudo a completarlo.
