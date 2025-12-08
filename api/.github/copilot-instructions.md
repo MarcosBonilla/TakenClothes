@@ -1,0 +1,6 @@
+- [x] Estructura inicial backend Node.js + Express creada
+- [x] Endpoints pedidos: crear, listar, actualizar, filtrar
+- [x] Base de datos SQLite
+- [x] README con instrucciones
+- [ ] Conexión frontend y protección admin pendiente
+- [ ] Integración pagos pendiente

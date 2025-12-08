@@ -2,24 +2,20 @@
   "name": "shop-dropshipping",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "scripts": {
-    "build": "npm run build:frontend",
-    "build:frontend": "vite build",
-    "build:api": "cd api && npm install",
-    "dev": "vite",
-    "start": "cd api && npm start"
-  },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
