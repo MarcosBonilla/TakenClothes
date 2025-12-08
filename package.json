@@ -9,6 +9,13 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "scripts": {
+    "build": "npm run build:frontend",
+    "build:frontend": "vite build",
+    "build:api": "cd api && npm install",
+    "dev": "vite",
+    "start": "cd api && npm start"
+  },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
