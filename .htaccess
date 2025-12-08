@@ -3,8 +3,7 @@ RewriteEngine On
 RewriteBase /
 
 # Si es una petición API, redirigir al backend Node.js
-# (Descomentar cuando configures el backend)
-# RewriteRule ^api/(.*)$ http://localhost:3000/api/$1 [P,L]
+RewriteRule ^api/(.*)$ http://localhost:3000/api/$1 [P,L]
 
 # Si el archivo o directorio existe, servirlo directamente
 RewriteCond %{REQUEST_FILENAME} !-f
