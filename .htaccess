@@ -2,12 +2,14 @@
 RewriteEngine On
 RewriteBase /
 
-# Si es una petición API, redirigir al backend Node.js
-RewriteRule ^api/(.*)$ http://localhost:3000/api/$1 [P,L]
+# Proxy para API al backend Node.js (puerto 3000)
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteRule ^api/(.*)$ http://127.0.0.1:3000/api/$1 [P,L]
 
 # Si el archivo o directorio existe, servirlo directamente
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/api/
 
 # Redirigir todo lo demás a index.html (React Router)
 RewriteRule . /index.html [L]
