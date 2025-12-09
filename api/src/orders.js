@@ -5,9 +5,9 @@ const router = express.Router();
 // Almacenamiento temporal en memoria con stock
 let orders = [];
 let stock = {
-    'campera-azul': { S: 10, M: 15, L: 12, XL: 8 },
-    'campera-negra': { S: 8, M: 10, L: 10, XL: 6 },
-    'campera-rosa': { S: 12, M: 14, L: 11, XL: 7 }
+    'campera-azul': { 'XS/S': 10, 'M/L': 15, 'XL': 8 },
+    'campera-negra': { 'XS/S': 8, 'M/L': 10, 'XL': 6 },
+    'campera-rosa': { 'XS/S': 12, 'M/L': 14, 'XL': 7 }
 };
 
 // GET /api/orders - Obtener todas las órdenes
