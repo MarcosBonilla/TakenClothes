@@ -4,7 +4,7 @@ function Info() {
   return (
     <div className="info-container">
       {/* Logo grande centrado y detrás */}
-      <img src="/logo.png" alt="Logo" className="info-logo-bg" />
+      <img src="/logo.png" alt="Logo" className="info-logo-bg" width="300" height="100" />
       <div className="info-content">
         <h1 className="info-title">Sobre la marca</h1>
         <p className="info-date">Fundada en 2023</p>

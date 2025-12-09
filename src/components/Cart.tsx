@@ -32,7 +32,7 @@ function Cart({ onCheckout, deliveryType, setDeliveryType, setPaymentType, payme
   return (
     <div className="cart-container">
       {/* Logo grande centrado y detrás */}
-      <img src="/logo.png" alt="Logo" className="cart-logo-bg" />
+      <img src="/logo.png" alt="Logo" className="cart-logo-bg" width="300" height="100" />
       <h1 className="cart-title">Carrito de compra</h1>
       <div className="cart-content">
         {removedMsg && <div className="cart-removed-msg">{removedMsg}</div>}
@@ -40,7 +40,7 @@ function Cart({ onCheckout, deliveryType, setDeliveryType, setPaymentType, payme
           {cartItems.map((item) => (
             <div key={`${item.id}-${item.size}-${item.color}`} className="cart-item">
               <div className="cart-item-image">
-                <img src={item.imageFront} alt={item.title} />
+                <img src={item.imageFront} alt={item.title} width="100" height="100" loading="lazy" />
               </div>
               
               <div className="cart-item-details">
@@ -111,7 +111,7 @@ function Cart({ onCheckout, deliveryType, setDeliveryType, setPaymentType, payme
             <div className="payment-options">
               <label>
                 <input type="radio" name="paymentType" value="paypal" checked={paymentType === 'paypal'} onChange={() => setPaymentType('paypal')} />
-                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" className="paypal-logo" />
+                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" className="paypal-logo" width="64" height="64" />
                 <span>PayPal</span>
               </label>
               <label style={{display: 'none'}}>

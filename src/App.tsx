@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import './App.css'
-import ProductDetail from './components/ProductDetail'
-import Cart from './components/Cart'
-import Countdown from './components/Countdown'
-import Info from './components/Info'
-import Checkout from './components/Checkout'
-import DropEnded from './components/DropEnded'
-import Admin from './components/Admin'
 import { useCart } from './context/CartContext'
-import OrderSuccess from './components/OrderSuccess'
+
+// Lazy loading de componentes pesados
+const ProductDetail = lazy(() => import('./components/ProductDetail'))
+const Cart = lazy(() => import('./components/Cart'))
+const Countdown = lazy(() => import('./components/Countdown'))
+const Info = lazy(() => import('./components/Info'))
+const Checkout = lazy(() => import('./components/Checkout'))
+const DropEnded = lazy(() => import('./components/DropEnded'))
+const Admin = lazy(() => import('./components/Admin'))
+const OrderSuccess = lazy(() => import('./components/OrderSuccess'))
 
 interface Product {
   id: number
@@ -107,17 +109,29 @@ function App() {
   // Para acceder: añadir ?countdown=true en la URL
   const urlParams = new URLSearchParams(window.location.search)
   if (urlParams.get('countdown') === 'true' || showCountdown) {
-    return <Countdown />
+    return (
+      <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+        <Countdown />
+      </Suspense>
+    )
   }
 
   // Ruta especial para drop terminado (accesible directamente)
   if (urlParams.get('drop') === 'ended') {
-    return <DropEnded />
+    return (
+      <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+        <DropEnded />
+      </Suspense>
+    )
   }
 
   // Ruta especial para admin (accesible directamente)
   if (window.location.pathname === '/admin') {
-    return <Admin />
+    return (
+      <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+        <Admin />
+      </Suspense>
+    )
   }
 
 
@@ -125,7 +139,9 @@ function App() {
   if (selectedProduct) {
     return (
       <div className={`fade-wrapper${fade ? ' fade-out' : ''}`}>
-        <ProductDetail product={selectedProduct} onBack={handleBackToHome} onGoToCart={handleGoToCart} />
+        <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+          <ProductDetail product={selectedProduct} onBack={handleBackToHome} onGoToCart={handleGoToCart} />
+        </Suspense>
       </div>
     )
   }
@@ -153,13 +169,15 @@ function App() {
             </nav>
           </div>
         </header>
-        <Cart
-          onCheckout={() => handleSectionChange('checkout')}
-          deliveryType={deliveryType}
-          setDeliveryType={setDeliveryType}
-          paymentType={paymentType}
-          setPaymentType={setPaymentType}
-        />
+        <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+          <Cart
+            onCheckout={() => handleSectionChange('checkout')}
+            deliveryType={deliveryType}
+            setDeliveryType={setDeliveryType}
+            paymentType={paymentType}
+            setPaymentType={setPaymentType}
+          />
+        </Suspense>
       </div>
     )
   }
@@ -187,17 +205,23 @@ function App() {
             </nav>
           </div>
         </header>
-        <Info />
+        <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+          <Info />
+        </Suspense>
       </div>
     )
   }
 
   // Pantalla de éxito tras pedido
   if (orderSuccess) {
-    return <OrderSuccess onBackToHome={() => {
-      setOrderSuccess(false)
-      setActiveSection('home')
-    }} />
+    return (
+      <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+        <OrderSuccess onBackToHome={() => {
+          setOrderSuccess(false)
+          setActiveSection('home')
+        }} />
+      </Suspense>
+    )
   }
 
   // Si la sección activa es checkout, mostrar la página de pago
@@ -223,7 +247,9 @@ function App() {
               </nav>
             </div>
           </header>
-          <Checkout deliveryType={deliveryType} onOrderSuccess={() => setOrderSuccess(true)} paymentType={paymentType} />
+          <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
+            <Checkout deliveryType={deliveryType} onOrderSuccess={() => setOrderSuccess(true)} paymentType={paymentType} />
+          </Suspense>
         </div>
       )
   }
@@ -233,7 +259,7 @@ function App() {
       {/* Header solo en pantallas principales */}
       <header className="header">
         <div className="header-logo-nav">
-          <img src="/logo.png" alt="Logo" className="header-logo" />
+          <img src="/logo.png" alt="Logo" className="header-logo" width="120" height="40" />
           <nav className="nav">
             {navItems.map(item => (
               <div
@@ -270,11 +296,17 @@ function App() {
                     src={product.imageFront} 
                     alt={product.title}
                     className="product-image product-image-front"
+                    width="400"
+                    height="400"
+                    loading="lazy"
                   />
                   <img 
                     src={product.imageBack} 
                     alt={`${product.title} - Back`}
                     className="product-image product-image-back"
+                    width="400"
+                    height="400"
+                    loading="lazy"
                   />
                 </div>
                 <div className="product-info">

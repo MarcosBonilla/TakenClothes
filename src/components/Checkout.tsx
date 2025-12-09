@@ -24,7 +24,15 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
   useEffect(() => {
     setForm(f => ({ ...f, pago: paymentType }));
   }, [paymentType]);
-  // Eliminada variable isFormComplete no utilizada
+  
+  // Validar si el formulario está completo
+  const isFormComplete = () => {
+    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) return false;
+    if (deliveryType === 'envio' && (!form.address.trim() || !form.city.trim())) return false;
+    if (form.phone.length !== 8) return false;
+    return true;
+  };
+  
   const isCartNotEmpty = cartItems.length > 0;
 
   // Referencia para el contenedor del botón PayPal
@@ -32,7 +40,7 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
   const mercadoPagoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!paypalRef.current) return;
+    if (!paypalRef.current || !isFormComplete()) return;
     paypalRef.current.innerHTML = '';
     // @ts-ignore
     if (!(window as any).paypal) {
@@ -100,7 +108,7 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
     return () => {
       if (paypalRef.current) paypalRef.current.innerHTML = '';
     };
-  }, [cartItems, getTotalPrice, form, deliveryType, onOrderSuccess, clearCart]);
+  }, [cartItems, getTotalPrice, form, deliveryType, onOrderSuccess, clearCart, isFormComplete]);
 
   // MercadoPago Button - Simulado para testing
   useEffect(() => {
@@ -193,9 +201,23 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
             ))}
           </ul>
           <div className="checkout-total">
-            <span>Total:</span>
+            <span>Subtotal:</span>
             <span>{getTotalPrice().toFixed(0)} UYU</span>
           </div>
+          {deliveryType === 'envio' && (
+            <div style={{ 
+              marginTop: '1rem', 
+              padding: '0.8rem', 
+              background: '#f8f9fa', 
+              borderRadius: '6px',
+              fontSize: '0.9rem',
+              color: '#555',
+              borderLeft: '3px solid #667eea'
+            }}>
+              <strong>📦 Envío:</strong> Entre $200 - $300 UYU<br />
+              <small style={{ color: '#777' }}>Se abona a la empresa de envíos al recibir el producto</small>
+            </div>
+          )}
         </div>
 
         <form className="checkout-form" onSubmit={handleSubmit}>
@@ -233,8 +255,13 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
               }}
             />
           </div>
-          {/* Botón PayPal solo si selecciona PayPal */}
-          {isCartNotEmpty && form.pago === 'paypal' && <div ref={paypalRef} style={{ marginTop: '1.5rem' }} />}
+          {/* Botón PayPal solo si selecciona PayPal y el formulario está completo */}
+          {isCartNotEmpty && form.pago === 'paypal' && isFormComplete() && <div ref={paypalRef} style={{ marginTop: '1.5rem' }} />}
+          {isCartNotEmpty && form.pago === 'paypal' && !isFormComplete() && (
+            <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#f0f0f0', borderRadius: '6px', textAlign: 'center', color: '#666' }}>
+              Completa todos los datos para ver las opciones de pago
+            </div>
+          )}
           {/* Botón MercadoPago solo si selecciona MercadoPago */}
           {isCartNotEmpty && form.pago === 'mercadopago' && <div ref={mercadoPagoRef} style={{ marginTop: '1.5rem' }} />}
         </form>
