@@ -3,12 +3,19 @@ import express from 'express';
 const router = express.Router();
 
 // Almacenamiento temporal en memoria con stock
+// Simula la tabla stock de SQLite del backend original
 let orders = [];
-let stock = {
-    'campera-azul': { 'XS/S': 10, 'M/L': 15, 'XL': 8 },
-    'campera-negra': { 'XS/S': 8, 'M/L': 10, 'XL': 6 },
-    'campera-rosa': { 'XS/S': 12, 'M/L': 14, 'XL': 7 }
-};
+let stock = [
+    { producto: 'Taken Azul', talla: 'XS/S', cantidad: 15 },
+    { producto: 'Taken Azul', talla: 'M/L', cantidad: 20 },
+    { producto: 'Taken Azul', talla: 'XL', cantidad: 12 },
+    { producto: 'Taken Negra', talla: 'XS/S', cantidad: 10 },
+    { producto: 'Taken Negra', talla: 'M/L', cantidad: 18 },
+    { producto: 'Taken Negra', talla: 'XL', cantidad: 8 },
+    { producto: 'Taken Rosa', talla: 'XS/S', cantidad: 14 },
+    { producto: 'Taken Rosa', talla: 'M/L', cantidad: 16 },
+    { producto: 'Taken Rosa', talla: 'XL', cantidad: 10 }
+];
 
 // GET /api/orders - Obtener todas las órdenes
 router.get('/', async (req, res) => {
@@ -20,27 +27,22 @@ router.get('/', async (req, res) => {
     }
 });
 
-// POST /api/orders - Crear nueva orden
+// POST /api/orders - Crear nueva orden (igual que backend original)
 router.post('/', async (req, res) => {
     try {
         const { cliente, email, contacto, producto, talla, cantidad, pago, entrega, status } = req.body;
 
-        // Verificar stock disponible
-        if (!stock[producto] || !stock[producto][talla]) {
-            return res.status(400).json({ error: 'Producto o talla no encontrados' });
+        // Verificar stock disponible (igual que SELECT en SQLite)
+        const item = stock.find(s => s.producto === producto && s.talla === talla);
+        
+        if (!item || item.cantidad < cantidad) {
+            return res.status(400).json({ error: 'Stock insuficiente' });
         }
 
-        if (stock[producto][talla] < cantidad) {
-            return res.status(400).json({ 
-                error: 'Stock insuficiente', 
-                disponible: stock[producto][talla] 
-            });
-        }
+        // Descontar stock (igual que UPDATE en SQLite)
+        item.cantidad -= cantidad;
 
-        // Descontar stock
-        stock[producto][talla] -= cantidad;
-
-        // Crear pedido
+        // Crear pedido (igual que INSERT en SQLite)
         const newOrder = {
             id: orders.length + 1,
             cliente,
@@ -51,52 +53,69 @@ router.post('/', async (req, res) => {
             cantidad,
             pago,
             entrega,
-            status: status || 'pendiente',
-            createdAt: new Date().toISOString()
+            status: status || 'pendiente'
         };
 
         orders.push(newOrder);
 
-        res.json({ 
-            id: newOrder.id,
-            message: 'Orden creada exitosamente',
-            stockRestante: stock[producto][talla]
-        });
+        res.json({ id: newOrder.id });
     } catch (error) {
         console.error('Error creating order:', error);
         res.status(500).json({ error: 'Error al crear orden' });
     }
 });
 
-// GET /api/orders/stock - Obtener stock actual
+// GET /api/orders/stock - Obtener stock actual (igual que backend original)
 router.get('/stock', async (req, res) => {
     try {
-        res.json(stock);
+        const { producto } = req.query;
+        let result;
+        
+        if (producto) {
+            // Filtrar por producto específico
+            result = stock.filter(s => s.producto === producto);
+        } else {
+            // Devolver todo el stock
+            result = stock;
+        }
+        
+        res.json(result);
     } catch (error) {
         console.error('Error fetching stock:', error);
         res.status(500).json({ error: 'Error al obtener stock' });
     }
 });
 
-// PUT /api/orders/:id - Actualizar estado de orden
+// PUT /api/orders/:id - Actualizar estado de orden (igual que backend original)
 router.put('/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const { status } = req.body;
+        let { status } = req.body;
+        status = (status || 'pendiente').toLowerCase().trim();
 
-        const orderIndex = orders.findIndex(o => o.id === parseInt(id));
+        const order = orders.find(o => o.id === parseInt(req.params.id));
         
-        if (orderIndex === -1) {
+        if (!order) {
             return res.status(404).json({ error: 'Orden no encontrada' });
         }
 
-        orders[orderIndex].status = status;
-        orders[orderIndex].updatedAt = new Date().toISOString();
+        order.status = status;
 
-        res.json(orders[orderIndex]);
+        res.json({ success: true });
     } catch (error) {
         console.error('Error updating order:', error);
         res.status(500).json({ error: 'Error al actualizar orden' });
+    }
+});
+
+// GET /api/orders/status/:status - Filtrar por estado (igual que backend original)
+router.get('/status/:status', async (req, res) => {
+    try {
+        const statusParam = req.params.status.toLowerCase();
+        const filtered = orders.filter(o => o.status?.toLowerCase() === statusParam);
+        res.json(filtered);
+    } catch (error) {
+        console.error('Error filtering by status:', error);
+        res.status(500).json({ error: 'Error al filtrar órdenes' });
     }
 });
 
