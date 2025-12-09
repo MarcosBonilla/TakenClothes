@@ -5,15 +5,21 @@ import mercadopagoRouter from './src/mercadopago.js';
 
 const app = express();
 
+// CORS configurado para Hostinger
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    credentials: true
+    origin: [
+        'https://moccasin-bear-830047.hostingersite.com',
+        'http://localhost:5173',
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 app.use(express.json());
 
 // Test endpoint
-app.get('/api/', (req, res) => {
+app.get('/', (req, res) => {
     res.json({
         message: 'Shop-dropping backend running on Vercel',
         timestamp: new Date().toISOString()
@@ -21,8 +27,8 @@ app.get('/api/', (req, res) => {
 });
 
 // Routes
-app.use('/api/orders', ordersRouter);
-app.use('/api/mercadopago', mercadopagoRouter);
+app.use('/orders', ordersRouter);
+app.use('/mercadopago', mercadopagoRouter);
 
 // Export for Vercel
 export default app;
