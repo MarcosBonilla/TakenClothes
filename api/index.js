@@ -8,6 +8,8 @@ const app = express();
 // CORS configurado para Hostinger
 app.use(cors({
     origin: [
+        'https://takenclothes.com',
+        'https://www.takenclothes.com',
         'https://moccasin-bear-830047.hostingersite.com',
         'http://localhost:5173',
         process.env.FRONTEND_URL
