@@ -14,7 +14,6 @@ function Admin() {
   const [toast, setToast] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('todos');
 
-  // Calcular los totales de cada estado (después de los hooks)
   const filteredOrders = filter === 'todos' ? orders : orders.filter(o => o.status.toLowerCase() === filter);
   const statusCounts = {
     pendiente: orders.filter(o => o.status.toLowerCase() === 'pendiente').length,
@@ -24,7 +23,6 @@ function Admin() {
     total: orders.length
   };
 
-  // Función para cargar pedidos
   const fetchOrders = () => {
     fetch(`${import.meta.env.VITE_API_URL}/orders`)
       .then(res => res.json())
@@ -55,7 +53,7 @@ function Admin() {
       fetchOrders();
       const interval = setInterval(() => {
         fetchOrders();
-      }, 20000); // 20 segundos
+      }, 20000);
       return () => {
         clearInterval(interval);
       };
@@ -74,10 +72,8 @@ function Admin() {
   }
 
   const handleStatus = (id: number, status: 'pendiente' | 'confirmado' | 'cancelado' | 'completado') => {
-    // Actualizar estado local inmediatamente
     setOrders(orders.map(o => o.id === id ? { ...o, status } : o))
     
-    // Actualizar en el backend
     fetch(`${import.meta.env.VITE_API_URL}/orders/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

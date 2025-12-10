@@ -41,12 +41,10 @@ function ProductDetail({ product, onBack, onGoToCart }: ProductDetailProps) {
     }
   };
 
-  // Consultar stock al montar el componente
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/orders/stock?producto=${encodeURIComponent(product.title)}`)
       .then(res => res.json())
       .then(data => {
-        // data: [{ talla: 'XS/S', cantidad: 5 }, ...]
         const stockMap: Record<string, number> = {}
         data.forEach((item: { talla: string, cantidad: number }) => {
           stockMap[item.talla] = item.cantidad
@@ -79,13 +77,11 @@ function ProductDetail({ product, onBack, onGoToCart }: ProductDetailProps) {
     setShowConfirmation(true)
     setTimeout(() => setShowConfirmation(false), 2000)
   }
-  // Verificar si todas las tallas están sin stock
   const allOutOfStock = product.sizes.every((size: string) => stock[size] === 0 || stock[size] === undefined)
 
   return (
     <div className="product-detail">
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      {/* Header con botón volver */}
       <header className="detail-header">
         <button className="back-button" onClick={onBack}>
           ← Volver

@@ -29,20 +29,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return stored ? JSON.parse(stored) : []
   })
 
-  // Guardar el carrito en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems))
   }, [cartItems])
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCartItems(prev => {
-      // Verificar si el producto con el mismo tamaño y color ya existe
       const existingItem = prev.find(
         i => i.id === item.id && i.size === item.size && i.color === item.color
       )
 
       if (existingItem) {
-        // Si existe, incrementar la cantidad
         return prev.map(i =>
           i.id === item.id && i.size === item.size && i.color === item.color
             ? { ...i, quantity: i.quantity + 1 }
@@ -50,7 +47,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         )
       }
 
-      // Si no existe, agregarlo con cantidad 1
       return [...prev, { ...item, quantity: 1 }]
     })
   }

@@ -2,7 +2,6 @@ import { useState, lazy, Suspense } from 'react'
 import './App.css'
 import { useCart } from './context/CartContext'
 
-// Lazy loading de componentes pesados
 const ProductDetail = lazy(() => import('./components/ProductDetail'))
 const Cart = lazy(() => import('./components/Cart'))
 const Countdown = lazy(() => import('./components/Countdown'))
@@ -68,7 +67,6 @@ function App() {
 
   const navItems = ['home', 'carrito', 'info']
 
-  // Función para manejar cualquier navegación con fade
   const handleSectionChange = (section: string) => {
     setFade(true)
     setTimeout(() => {
@@ -104,9 +102,6 @@ function App() {
     }, 350)
   }
 
-
-  // Ruta especial para countdown (accesible directamente)
-  // Para acceder: añadir ?countdown=true en la URL
   const urlParams = new URLSearchParams(window.location.search)
   if (urlParams.get('countdown') === 'true' || showCountdown) {
     return (
@@ -116,7 +111,6 @@ function App() {
     )
   }
 
-  // Ruta especial para drop terminado (accesible directamente)
   if (urlParams.get('drop') === 'ended') {
     return (
       <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
@@ -125,7 +119,6 @@ function App() {
     )
   }
 
-  // Ruta especial para admin (accesible directamente)
   if (window.location.pathname === '/admin') {
     return (
       <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
@@ -135,7 +128,6 @@ function App() {
   }
 
 
-  // Si hay un producto seleccionado, mostrar la página de detalle
   if (selectedProduct) {
     return (
       <div className={`fade-wrapper${fade ? ' fade-out' : ''}`}>
@@ -146,7 +138,6 @@ function App() {
     )
   }
 
-  // Si la sección activa es carrito, mostrar el carrito
   if (activeSection === 'carrito') {
     return (
       <div className={`fade-wrapper${fade ? ' fade-out' : ''}`}>
@@ -182,7 +173,6 @@ function App() {
     )
   }
 
-  // Si la sección activa es info, mostrar la página de información
   if (activeSection === 'info') {
     return (
       <div className={`fade-wrapper${fade ? ' fade-out' : ''}`}>
@@ -212,7 +202,6 @@ function App() {
     )
   }
 
-  // Pantalla de éxito tras pedido
   if (orderSuccess) {
     return (
       <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>Cargando...</div>}>
@@ -224,7 +213,6 @@ function App() {
     )
   }
 
-  // Si la sección activa es checkout, mostrar la página de pago
   if (activeSection === 'checkout') {
       return (
         <div className={`fade-wrapper${fade ? ' fade-out' : ''}`}>

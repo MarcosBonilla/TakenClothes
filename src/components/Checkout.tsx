@@ -17,15 +17,13 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
     address: '',
     city: '',
     phone: '',
-    pago: paymentType // inicializa con el prop
+    pago: paymentType
   });
 
-  // Sincroniza form.pago con paymentType
   useEffect(() => {
     setForm(f => ({ ...f, pago: paymentType }));
   }, [paymentType]);
   
-  // Validar si el formulario está completo
   const isFormComplete = () => {
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) return false;
     if (deliveryType === 'envio' && (!form.address.trim() || !form.city.trim())) return false;
@@ -35,14 +33,12 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
   
   const isCartNotEmpty = cartItems.length > 0;
 
-  // Referencia para el contenedor del botón PayPal
   const paypalRef = useRef<HTMLDivElement>(null);
   const mercadoPagoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!paypalRef.current || !isFormComplete()) return;
     paypalRef.current.innerHTML = '';
-    // @ts-ignore
     if (!(window as any).paypal) {
       const script = document.createElement('script');
         script.src = 'https://www.paypal.com/sdk/js?client-id=AQ1vHpQS0cuRLOU4DFW23VYnK1iwGoFtf0-CYHD2O3cFg0NRvtEqqNoGo7ZY_RayWhIi63zu2G8sOa4q&currency=USD&enable-funding=paypal&disable-funding=card';
@@ -54,16 +50,13 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
     }
     function renderPayPalButton() {
       if (paypalRef.current) paypalRef.current.innerHTML = '';
-      // @ts-ignore
       (window as any).paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
         funding: {
-          // @ts-ignore
           disallowed: [(window as any).paypal.FUNDING.CARD]
         },
         createOrder: (_data: any, actions: any) => {
-          // Conversión de UYU a USD
-          const exchangeRate = 40; // 1 USD = 40 UYU
+          const exchangeRate = 40;
           const totalUYU = getTotalPrice();
           const totalUSD = (totalUYU / exchangeRate).toFixed(2);
           return actions.order.create({
@@ -110,12 +103,10 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
     };
   }, [cartItems, getTotalPrice, form, deliveryType, onOrderSuccess, clearCart, isFormComplete]);
 
-  // MercadoPago Button - Simulado para testing
   useEffect(() => {
     if (!mercadoPagoRef.current || form.pago !== 'mercadopago') return;
     mercadoPagoRef.current.innerHTML = '';
     
-    // Crear botón de prueba mientras no tenemos credenciales reales
     const testButton = document.createElement('div');
     testButton.style.cssText = `
       width: 100%;
@@ -131,7 +122,6 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
     testButton.textContent = 'Pagar con MercadoPago (Demo)';
     
     testButton.onclick = () => {
-      // Simular flujo de pago exitoso
       Promise.all(
         cartItems.map(item =>
           fetch('http://localhost:4000/orders', {
@@ -168,7 +158,6 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
       if (mercadoPagoRef.current) mercadoPagoRef.current.innerHTML = '';
     };
   }, [cartItems, form, deliveryType, onOrderSuccess, clearCart]);
-  // ...existing code...
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -182,7 +171,6 @@ function Checkout({ deliveryType = 'envio', onOrderSuccess, paymentType }: Check
       setTimeout(() => setErrorMsg(''), 2000);
       return;
     }
-    // Aquí iría la lógica de envío si se implementa otro método de pago (ej: transferencia)
   }
 
   return (

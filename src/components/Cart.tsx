@@ -11,7 +11,6 @@ function Cart({ onCheckout, deliveryType, setDeliveryType, setPaymentType, payme
 }) {
   const { cartItems, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart()
   const [removedMsg, setRemovedMsg] = useState<string | null>(null)
-  // El estado de paymentType ahora se maneja en App
 
   const handleRemove = (id: number, size: string, color: string) => {
     removeFromCart(id, size, color)
